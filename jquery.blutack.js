@@ -185,7 +185,7 @@
         delta;
       if ($within) {
         delta = ($within.offset().top + $within.height() - scrollTop) -
-          (props.height + props.offsetTop); // why does this always come up short?
+          (props.height + props.offsetTop);
         if (delta < 0) {
           pinch($elem, delta);
         } else if ($elem.data('isPinched') && delta >= 0) {

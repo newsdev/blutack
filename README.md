@@ -1,51 +1,18 @@
 # Blutack
 
-
-
-## Usage
-
-### Programatic
-
-#### $(selector).blutack(options)
-
-To programmatically affix elements, use `$('.any-old-selector').blutack()`.  Element position will be fixed immediately if page is already scrolled past position fix position.  Options is an optional hash.  (See __Options__ below.)
-
-#### $(selector).blutack('remove')
-
-Instantly unfixes any tacked elements that match the selector and deactivates blutack behavior on those elements.
-
-#### $(selector).blutack('tacked')
-
-Returns `true` if the element is currently fixed, `false` if element is in its original unfixed position.
-
-### Automatic
-
-All elements with class `blutack` will automatically be set on document ready to affix with offsetTop = 0.  Options can be inlined by adding a `data-blutack-options` attribute to the element, with options as key/value pairs separated by a semi-colon:
-
-    <div class="blutack" data-blutack-options="offsetTop:10; freezeWidth: true;">Lorem ipsum...</div>  
-
-## Options
-
-At the moment, blutack only takes two options:
-
-* `offsetTop: INT`: specifies the padding between the viewport top and the element while it is fixed.  _Default_ `0`
-* `freezeWidth: BOOL`: fix width of tacked element once it is tacked.  If `false`, element width will be set to 'auto'.  _Default_ `false`
-
-# Blutack
-
 ## Description
-
-![Blutack](blutack.jpg)
 
 A simple jQuery plugin for dynamically fixing element positions.
 
-*Current example: [Blutack](https://github.com/newsdev/blutack)*
+![Blutack](blutack.jpg)
 
 * [Features](#features)
 * [Requirements](#requirements)
 * [Support](#support)
 * [Installation](#installation)
 * [Usage](#usage)
+    * [Options](#options)
+    * [Plugin Methods](#plugin-methods)
 * [Tests](#tests)
 * [Upcoming Features](#upcoming-features)
 * [Other Relevant Documentation](#other-relevant-documentation)
@@ -53,60 +20,31 @@ A simple jQuery plugin for dynamically fixing element positions.
 
 ## Features
 
-* List
-* noteworthy
-* features
+* Requires minimal (or no) defensive CSS to keep targeted or surrounding elements from collapsing or changing size when target element's position becomes fixed.
+* Includes options to keep a fixed element within the bounds of a specified parent element
+* Initialize with data attributes or JS
 
 ## Requirements
 
-* Other JS libraries?
-* Additional services?
+* jQuery
 
 ## Support
 
-*Instructions on how to get help with this project or report problems.  Are Github issues a good mechanism?*
-
-*Also outline who will be maintaining this project in the future..*
+Blutack was developed by Scott Blumenthal (scott.blumenthal@nytimes.com).  It is not being actively developed at the moment.  Please submit a [Github issue](https://github.com/newsdev/blutack/issues/new) to request features or report bugs.
 
 ## Installation
 
-*Source file(s) to download. Build instructions, if any.  Can it be installed via NPM or Bower?  For example:*
-
-Add Interactive News' Bower registry to your `.bowerrc` file:
-
-    {
-      "registry": {
-        "search": [
-          ...
-          "http://bower.newsdev.net"
-        ]
-      }
-      ...
-    }
-
-Add my-js-lib to your bower.json:
-
-    {
-      "name": "your_app",
-      "dependencies": {
-        "my-js-lib": "1.2.0"
-        ...
-      }
-    }
-
-And:
-
-    bower install
-
-For more information, see the [Bower docs](http://bower.io/).
+Download the [full](https://raw.githubusercontent.com/newsdev/blutack/master/jquery.blutack.js) or [minified](https://raw.githubusercontent.com/newsdev/blutack/master/jquery.blutack.min.js) file.
 
 ## Usage
 
-*API documentation and examples* 
+Blutack functions like a standard jQuery plugin.  Initialize Blutack on an element *programmatically* with Javascript:
 
-Get started with MyLib by instantiating a Foo:
+    $('.any-old-selector').blutack();
 
-    var myFoo = new Foo(options)
+or *automatically* by adding the `blutack` class.  Options can be inlined by adding a `data-blutack-options` attribute to the element, with options as key/value pairs separated by a semi-colon:
+
+    <div class="blutack" data-blutack-options="offsetTop:10; freezeWidth: true;">Lorem ipsum...</div>
 
 ### Options
 
@@ -121,81 +59,61 @@ Get started with MyLib by instantiating a Foo:
   </thead>
   <tbody>
     <tr>
-      <td>bar</td>
-      <td>string</td>
-      <td>'Hello, world.'</td>
-      <td>Customize your `bar`.</td>
-    </tr>
-    <tr>
-      <td>baz</td>
+      <td>offsetTop</td>
       <td>integer</td>
-      <td>99</td>
-      <td>Maximum number of `baz` to try before giving up.</td>
+      <td>0</td>
+      <td>Specifies the padding between the viewport top and the element while it is fixed.</td>
     </tr>
     <tr>
-      <td>qux</td>
-      <td>function</td>
+      <td>freezeWidth</td>
+      <td>boolean</td>
+      <td>false</td>
+      <td>Fix the width of an element when it is tacked to the value of its untacked width.  If `false`, element width will be set to 'auto' when tacked.</td>
+    </tr>
+    <tr>
+      <td>keepWithin</td>
+      <td>DOM node, jQuery selector, or jQuery-wrapped DOM node</td>
       <td></td>
-      <td>Callback to execute if 'baz' is successful.</td>
+      <td>Must be a parent of the targeted element.  If defined, the target element will become fixed at the specified `offsetTop`, but only as long as it stays within the boundaries of the `keepWithin` element.</td>
     </tr>
   </tbody>
 </table>
 
 
-### Instance Methods
+### Plugin Methods
 
-#### .show(element, [css])
+#### $(selector).blutack([options])
 
-Shows an **element** (expressed as a reference to a DOM node, a jQuery selector, or a jQuery-wrapped node).  Additionally, set the CSS properties from the key-value pairs listed in **css**.  Returns reference to the shown DOM node (equivalent to `$(element).get(0)`).
+Apply Blutack to the specified element(s).  Element position will be fixed immediately if page is already scrolled past position fix position.  Returns $(selector).
 
-    myFoo.show('.some-element', { backgroundColor: 'green' });
+#### $(selector).blutack('remove')
 
-#### .on(eventName, callback)
+Instantly unfixes any tacked elements that match **selector** and deactivates blutack behavior on those elements.  Returns $(selector).
 
-Listen by **eventName** for one of the [Foo-specific events](#events) listed below, and execute **callback**.  Callback context (`this`) is the instance of Foo to which the listener was attached.
+#### $(selector).blutack('tacked')
 
-    myFoo.on('baz', function() {
-      this.show('.another-element');
-    });
+Returns `true` if the element is currently fixed, `false` if element is in its original unfixed position.
 
-### Events
+#### $(selector).blutack('retack')
 
-The following events can be triggered by an instance of Foo.
-
-<table>
-  <thead>
-    <tr>
-      <th>name</th>
-      <th>description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>bar</td>
-      <td>Triggered each time `bar` happens.</td>
-    </tr>
-    <tr>
-      <td>baz</td>
-      <td>Fires when `baz` is ready.</td>
-    </tr>
-  </tbody>
-</table>
+Manually retack (and reposition if necessary) all tacked elements matching **selector**.
 
 ## Tests
 
-*Are there tests?  How do I run them?*
+There are no unit tests for Blutack, but a test page showing a variety of behavior does exist at [examples/index.html](examples/index.html).
 
 ## Upcoming Features
 
-*What are you working on next?  Are there milestones in the Github issues worth referencing?*
-
-## Other Relevant Documentation
-
-*Links here to external documentation that might help someone using or developing in this project.  For example:*
-
-* [Bower](http://bower.io) - A package manager for the web
-* [jQuery](https://jQuery.com) - You'd better know by now
+* Possibly add triggers for `tack` and `untack` events?
 
 ## License
 
-*Include and licence information here.*
+The MIT License (MIT)
+
+Copyright (c) 2014 The New York Times Company
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
